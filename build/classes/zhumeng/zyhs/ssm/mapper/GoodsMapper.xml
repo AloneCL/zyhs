@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zhumeng.zyhs.ssm.mapper.GoodsMapper">
+	<resultMap type="zhumeng.zyhs.ssm.pojo.Goods" id="BaseResultMap">
+		<id column="goodsid" property="goodsId" jdbcType="INTEGER" />
+		<result column="goodstype" property="goodsType" jdbcType="VARCHAR" />
+		<result column="goodsprice" property="goodsPrice" jdbcType="DOUBLE" />
+		<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+		<result column="imageUrl1" property="imageUrl1" jdbcType="VARCHAR" />
+		<result column="imageUrl2" property="imageUrl2" jdbcType="VARCHAR" />
+		<result column="imageUrl3" property="imageUrl3" jdbcType="VARCHAR" />
+		<result column="goodsLevelid" property="goodsLevelId" jdbcType="INTEGER" />
+		<result column="missingtools" property="missingTools" jdbcType="VARCHAR" />
+		<result column="blorderid" property="blOrderId" jdbcType="INTEGER" />
+        <result column="poweratename" property="poweratename" jdbcType="VARCHAR" />
+		<result column="powerate" property="powerate" jdbcType="VARCHAR" />
+		<result column="brandname" property="brandname" jdbcType="VARCHAR" />
+		<result column="brand" property="brand" jdbcType="VARCHAR" />
+		<result column="time" property="time" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="num" property="num" jdbcType="DOUBLE" />
+		<result column="totalprice" property="totalPrice" jdbcType="DOUBLE" />
+		
+	</resultMap>
+	
+	<select id="selectByOrdersId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	    select * from goods where BlOrderId = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	   select * from goods where GoodsID = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<insert id="insertSelective" parameterType="zhumeng.zyhs.ssm.pojo.Goods" >
+	   insert into goods
+	 	<trim prefix="(" suffix=")" suffixOverrides=",">
+	        <if test="goodsPrice != null">
+				goodsPrice,
+			</if>
+			<if test="goodsLevelId != null">
+				goodsLevelId,
+			</if>
+			<if test="goodsType != null">
+				goodsType,
+			</if>
+			<if test="poweratename != null">
+			    poweratename,
+			</if>
+			<if test="powerate != null">
+			    powerate,
+			</if>
+			<if test="brandname != null">
+			    brandname,
+			</if>
+			<if test="brand != null">
+			    brand,
+			</if>
+			<if test="time != null">
+			    time,
+			</if>
+			<if test="num != null">
+			    num,
+			</if>
+			<if test="name != null">
+			    name,
+			</if>
+			<if test="totalPrice != null">
+			    totalPrice,
+			</if>
+			<if test="introduce != null">
+				introduce,
+			</if>
+			<if test="imageUrl1 != null">
+				imageUrl1,
+			</if>
+			<if test="imageUrl2 != null">
+				imageUrl2,
+			</if>
+			<if test="imageUrl3 != null">
+				imageUrl3,
+			</if>
+			<if test="blOrderId != null">
+			    blOrderId,
+			</if>
+			<if test="missingTools != null">
+			    missingTools,
+			</if>
+	   </trim> 
+	   <trim prefix="values (" suffix=")" suffixOverrides=",">
+	       <if test="goodsPrice != null">
+				#{goodsPrice,jdbcType=DOUBLE},
+			</if>
+			<if test="goodsLevelId != null">
+				#{goodsLevelId,jdbcType=INTEGER},
+			</if>
+			<if test="goodsType != null">
+				#{goodsType,jdbcType=VARCHAR},
+			</if>
+			<if test="poweratename != null">
+			    #{poweratename,jdbcType=VARCHAR},
+			</if>
+			<if test="powerate != null">
+			    #{powerate,jdbcType=VARCHAR},
+			</if>
+			<if test="brandname != null">
+			    #{brandname,jdbcType=VARCHAR},
+			</if>
+			<if test="brand != null">
+			    #{brand,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+			    #{time,jdbcType=VARCHAR},
+			</if>
+			<if test="num != null">
+			    #{num,jdbcType=DOUBLE},
+			</if>
+			<if test="name != null">
+			    #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="totalPrice != null">
+			    #{totalPrice,jdbcType=DOUBLE},
+			</if>
+			<if test="introduce != null">
+				#{introduce,jdbcType=VARCHAR},
+			</if>
+			<if test="imageUrl1 != null">
+				#{imageUrl1,jdbcType=VARCHAR},
+			</if>
+			<if test="imageUrl2 != null">
+				#{imageUrl2,jdbcType=VARCHAR},
+			</if>
+			<if test="imageUrl3 != null">
+				#{imageUrl3,jdbcType=VARCHAR},
+			</if>
+			<if test="blOrderId != null">
+			    #{blOrderId,jdbcType=INTEGER},
+			</if>
+			<if test="missingTools != null">
+			    #{missingTools,jdbcType=VARCHAR},
+			</if>
+	   </trim>
+	  
+	</insert>
+	
+	<update id="updateSelective"  parameterType="zhumeng.zyhs.ssm.pojo.Goods">
+	    update goods 
+	    <set>
+	        <if test="goodsType != null">
+	           goodsType = #{goodsType,jdbcType=VARCHAR},
+	        </if>
+	        <if test="goodsPrice != null">
+	           goodsPrice = #{goodsPrice,jdbcType=DOUBLE},
+	        </if>
+	        	<if test="poweratename != null">
+			   poweratename = #{poweratename,jdbcType=VARCHAR},
+			</if>
+			<if test="powerate != null">
+			   powerate = #{powerate,jdbcType=VARCHAR},
+			</if>
+			<if test="brandname != null">
+			   brandname = #{brandname,jdbcType=VARCHAR},
+			</if>
+			<if test="brand != null">
+			   brand = #{brand,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+			   time = #{time,jdbcType=VARCHAR},
+			</if>
+			<if test="num != null">
+			   num = #{num,jdbcType=DOUBLE},
+			</if>
+			<if test="name != null">
+			   name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="totalPrice != null">
+			  totalPrice = #{totalPrice,jdbcType=DOUBLE},
+			</if>
+	        <if test="goodsLevelId != null">
+	           goodsLevelId = #{goodsLevelId,jdbcType=INTEGER},
+	        </if>
+	        	<if test="introduce != null">
+				introduce = #{introduce,jdbcType=VARCHAR},
+			</if>
+			<if test="imageUrl1 != null">
+				imageurl1 = #{imageUrl1,jdbcType=VARCHAR},
+			</if>
+			<if test="imageUrl2 != null">
+				imageurl2 = #{imageUrl2,jdbcType=VARCHAR},
+			</if>
+			<if test="imageUrl3 != null">
+				imageurl3 = #{imageUrl3,jdbcType=VARCHAR},
+			</if>
+			<if test="blOrderId != null">
+			   blOrderId =  #{blOrderId,jdbcType=INTEGER},
+			</if>
+			<if test="missingTools !=null">
+			    missingTools = #{missingTools,jdbcType = VARCHAR},
+			</if>
+	    </set>
+	    where GoodsId = #{goodsId,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+	   delete from goods 
+	   where GoodsId = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>

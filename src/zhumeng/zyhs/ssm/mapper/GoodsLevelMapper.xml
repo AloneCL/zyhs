@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="zhumeng.zyhs.ssm.mapper.GoodsLevelMapper">
+	<resultMap type="zhumeng.zyhs.ssm.pojo.GoodsLevel" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER"></id>
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="levelname" property="levelName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,level,levelname
+	</sql>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from goodslevel
+	</select>
+    
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select * from goodslevel 
+         order by id limit #{page},10 
+    </select>
+    
+	<select id="selectByPrimaryKeySelective" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from goodslevel
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<update id="updateByPrimaryKeySelective" parameterType="zhumeng.zyhs.ssm.pojo.GoodsLevel">
+		update goodslevel
+		<set>
+			<if test="level !=null">
+				level = #{level,jdbcType=INTEGER},
+			</if>
+			<if test="levelName !=null">
+				levelname = #{levelName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id=#{id,jdbcType=INTEGER}
+	</update>
+
+	<insert id="insertSelective" parameterType="zhumeng.zyhs.ssm.pojo.GoodsLevel">
+		insert into goodslevel
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="level != null">
+				level,
+			</if>
+			<if test="levelName != null">
+				levelname,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="level != null">
+				#{level,jdbcType=INTEGER},
+			</if>
+			<if test="levelName != null">
+				#{levelName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteByPrimaryKeySelective" parameterType="java.lang.Integer">
+		delete from goodslevel
+		where id=#{id,jdbcType=INTEGER}
+	</delete>
+</mapper>

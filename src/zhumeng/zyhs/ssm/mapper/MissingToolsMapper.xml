@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zhumeng.zyhs.ssm.mapper.MissingToolsMapper">
+    <resultMap id="BaseResultMap" type="zhumeng.zyhs.ssm.pojo.MissingTools">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="levelId" property="levelId" jdbcType="INTEGER"/>
+        <result column="belongsId" property="belongsId" jdbcType="INTEGER"/>
+        <result column="toolsName"  property="toolsName" jdbcType="VARCHAR"/>
+        <result column="toolsPrice" property="toolsPrice" jdbcType="DOUBLE"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List">
+        id, levelId, belongsId, toolsName,toolsPrice
+    </sql>
+    
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from missingtools
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from missingtools
+        
+    </select>
+    
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select * from missingtools order by id limit #{page},10 
+    </select>
+    
+    <select id="selectByBlGoods" resultMap="BaseResultMap" parameterType="map">
+        select * from missingtools where levelId = #{level,jdbcType=INTEGER} and belongsId = #{belongsId,jdbcType=INTEGER}
+    </select>
+    
+    <insert id="insertSelective" parameterType="zhumeng.zyhs.ssm.pojo.MissingTools">
+        insert into missingtools
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="levelId != null">
+	            levelId,  
+            </if>
+            <if test="belongsId != null">
+                belongsId,
+            </if>
+            <if test="toolsName != null">
+                toolsName,
+            </if>
+            <if test="toolsPrice != null">
+                toolsPrice,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="levelId != null">
+                #{levelId,jdbcType=INTEGER},
+            </if>
+            <if test="belongsId != null">
+                #{belongsId,jdbcType=INTEGER},
+            </if>
+            <if test="toolsName != null">
+                #{toolsName,jdbcType=VARCHAR},
+            </if>
+            
+            <if test="toolsPrice != null">
+                #{toolsPrice,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="zhumeng.zyhs.ssm.pojo.MissingTools">
+        update missingtools
+        <set>
+          <if test="levelId != null">
+              levelId = #{levelId,jdbcType=INTEGER},
+            </if>
+            <if test="belongsId != null">
+                belongsId = #{belongsId,jdbcType=INTEGER},
+            </if>
+            <if test="toolsName != null">
+               toolsName = #{toolsName,jdbcType=VARCHAR},
+            </if>
+            
+            <if test="toolsPrice != null">
+               toolsPrice = #{toolsPrice,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update> 
+    
+    <update id="updateByBelongsKeySelective" parameterType="zhumeng.zyhs.ssm.pojo.MissingTools">
+        update missingtools
+        <set>
+               <if test="levelId != null">
+              levelId = #{levelId,jdbcType=INTEGER},
+            </if>
+            <if test="toolsName != null">
+               toolsName = #{toolsName,jdbcType=VARCHAR},
+            </if>
+            
+            <if test="toolsPrice != null">
+               toolsPrice = #{toolsPrice,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where belongsId = #{belongsId,jdbcType=INTEGER}
+    </update> 
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from missingtools
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

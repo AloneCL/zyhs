@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zhumeng.zyhs.ssm.mapper.OrderMapper">
+	<resultMap type="zhumeng.zyhs.ssm.pojo.Orders" id="BaseResultMap">
+		<id column="orderid" property="id" jdbcType="INTEGER"></id>
+		<result column="releasetime" property="releaseTime" jdbcType="VARCHAR" />
+		<result column="ordertime" property="orderTime" jdbcType="VARCHAR" />
+		<result column="finishtime" property="finishTime" jdbcType="VARCHAR" />
+		<result column="userid" property="userId" jdbcType="INTEGER" />
+		<result column="usertel" property="userTel" jdbcType="VARCHAR"/>
+		<result column="orderusertel" property="orderUserTel" jdbcType="VARCHAR"/>
+		<result column="orderusername" property="orderUserName" jdbcType="VARCHAR"/>
+		<result column="orderuserid" property="orderUserId" jdbcType="INTEGER"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="longitude" property="longitude" jdbcType="DOUBLE"/>
+        <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
+		<result column="ordermanner" property="orderManner" jdbcType="INTEGER" />
+		<result column="ordermoney" property="orderMoney" jdbcType="DOUBLE" />
+		<result column="orderstatus" property="orderStatus" jdbcType="INTEGER" />
+		<result column="userorderstatus" property="userOrderStatus" jdbcType="INTEGER" />
+		<result column="orderUserorderstatus" property="orderUserOrderStatus" jdbcType="INTEGER" />
+		<result column="imageurl" property="imageUrl" jdbcType="VARCHAR" />
+		<result column="username" property="userName" jdbcType="VARCHAR"/>
+		<result column="orderidentifier" property="orderIdentifier" jdbcType="VARCHAR"/>
+		<collection property="good" ofType="zhumeng.zyhs.ssm.pojo.Goods">
+			<id column="goodsid" property="goodsId" jdbcType="INTEGER" />
+			<result column="goodstype" property="goodsType" jdbcType="VARCHAR" />
+			<result column="goodsprice" property="goodsPrice" jdbcType="DOUBLE" />
+			<result column="introduce" property="introduce" jdbcType="VARCHAR" />
+			<result column="imageurl1" property="imageUrl1" jdbcType="VARCHAR" />
+			<result column="imageurl2" property="imageUrl2" jdbcType="VARCHAR" />
+			<result column="imageurl3" property="imageUrl3" jdbcType="VARCHAR" />
+			<result column="goodsLevelid" property="goodsLevelId" jdbcType="INTEGER" />
+			<result column="missingtools" property="missingTools" jdbcType="VARCHAR" />
+		    <result column="blorderid" property="blOrderId" jdbcType="INTEGER"/>
+		    <result column="poweratename" property="poweratename" jdbcType="VARCHAR" />
+		    <result column="powerate" property="powerate" jdbcType="VARCHAR" />
+		    <result column="brandname" property="brandname" jdbcType="VARCHAR" />
+		    <result column="brand" property="brand" jdbcType="VARCHAR" />
+		    <result column="time" property="time" jdbcType="VARCHAR" />
+		    <result column="name" property="name" jdbcType="VARCHAR" />
+		    <result column="num" property="num" jdbcType="DOUBLE" />
+		    <result column="totalprice" property="totalPrice" jdbcType="DOUBLE" />
+		</collection>
+	</resultMap>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select o.*,g.* from orders o left join goods g on
+		(o.OrderId=g.BlOrderId) where o.OrderStatus &lt;4
+	</select>
+	
+	<select id="selectByUserId" resultMap="BaseResultMap">
+	     select o.*,g.* from orders o left join goods g on
+		(o.OrderId=g.BlOrderId) where o.UserId = #{id,jdbcType=INTEGER} <!-- and o.OrderStatus &lt;4 -->
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select o.*,g.* from orders o left join goods g on
+		(o.OrderId=g.BlOrderId)
+		where o.OrderId = #{id,jdbcType=INTEGER}
+	</select>
+    
+    <select id="selectPage" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select * from orders where OrderStatus &lt;4
+         order by OrderId limit #{page},10 
+    </select>
+    
+	<select id="selectByStatus" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select o.*,g.* from orders o left join goods g on
+		(o.OrderId=g.BlOrderId)
+		where o.OrderStatus = #{status,jdbcType=INTEGER}
+	</select>
+	
+	
+	<select id="serchShoppingCar" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select o.*,g.* from orders o left join goods g on
+		(o.OrderId=g.BlOrderId)
+		where o.UserId = #{id,jdbcType=INTEGER} and o.OrderStatus = 4
+	</select>
+    
+   <!--  <select id="getWaitOrder" resultMap="BaseResultMap">
+       select o.*,g.* from orders o left join goods g on
+       (o.OrderId = g.BlOrderId)
+       where o.Order 
+    </select> -->
+    <update id="updateStatus" parameterType="zhumeng.zyhs.ssm.pojo.Orders">
+        update orders
+        <set>
+           <if test="orderStatus != null">
+                orderstatus = #{orderStatus,jdbcType=INTEGER}
+           </if>
+        </set>
+        where orderid = #{id,jdbcType=INTEGER}
+    </update>
+	
+	<insert id="insertSelective" parameterType="zhumeng.zyhs.ssm.pojo.Orders" keyProperty="id" useGeneratedKeys="true">
+		insert into orders
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="releaseTime != null">
+				releaseTime,
+			</if>
+			<if test="orderTime != null">
+				orderTime,
+			</if>
+			<if test="finishTime != null">
+				finishTime,
+			</if>
+			<if test="userId != null">
+				userId,
+			</if>
+			<if test="userName != null">
+			     userName,
+			</if>
+			<if test="orderIdentifier">
+			    orderIdentifier,
+			</if>
+			<if test="userTel != null">
+			    userTel,
+			</if>
+			<if test="orderUserId != null">
+			    orderUserId,
+			</if>
+			<if test="orderUserTel != null">
+			    orderUserTel,
+			</if>
+			<if test="orderUserName != null">
+			    orderUserName,
+			</if>
+			<if test="address != null">
+			     address,
+			</if>
+			<if test="longitude != null">
+                longitude,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+			<if test="orderManner != null">
+				orderManner,
+			</if>
+			<if test="orderMoney != null">
+				orderMoney,
+			</if>
+			<if test="orderStatus != null">
+				orderStatus,
+			</if>
+			<if test="orderUserOrderStatus != null">
+			    orderUserOrderStatus,
+			</if>
+			<if test="userOrderStatus != null">
+			     userOrderStatus,
+			</if>
+			<if test="imageUrl != null">
+				imageUrl,
+			</if>
+            
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="releaseTime != null">
+				#{releaseTime,jdbcType=VARCHAR},
+			</if>
+			<if test="orderTime != null">
+				#{orderTime,jdbcType=VARCHAR},
+			</if>
+			<if test="finishTime != null">
+				#{finishTime,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+			    #{userName,jdbcType = VARCHAR},
+			</if>
+			<if test="orderIdentifier != null">
+			   #{orderIdentifier,jdbcType=VARCHAR},
+			</if>
+			<if test="userTel != null">
+			    #{userTel,jdbcType=VARCHAR},
+			</if>
+			<if test="orderUserId != null">
+			    #{orderUserId,jdbcType=INTEGER},
+			</if>
+			<if test="orderUserTel != null">
+			    #{orderUserTel,jdbcType=VARCHAR},
+			</if>
+			<if test="orderUserName != null">
+			    #{orderUserName,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+			     #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="longitude != null">
+                #{longitude,jdbcType=DOUBLE},
+            </if>
+            <if test="latitude != null">
+                 #{latitude,jdbcType=DOUBLE},
+            </if>
+			<if test="orderManner != null">
+				#{orderManner,jdbcType=INTEGER},
+			</if>
+			<if test="orderMoney != null">
+				#{orderMoney,jdbcType=DOUBLE},
+			</if>
+			<if test="orderStatus != null">
+				#{orderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="orderUserOrderStatus != null">
+			    #{orderUserOrderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="userOrderStatus != null">
+			    #{userOrderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="imageUrl != null">
+				#{imageUrl,jdbcType=VARCHAR},
+			</if>
+		</trim>
+</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="zhumeng.zyhs.ssm.pojo.Orders">
+		update orders
+		<set>
+			<if test="releaseTime!=null">
+				releasetime = #{releaseTime,jdbcType=VARCHAR},
+			</if>
+			<if test="orderTime!=null">
+				ordertime = #{orderTime,jdbcType=VARCHAR},
+			</if>
+			<if test="finishTime != null">
+				finishtime = #{finishTime,jdbcType=VARCHAR},
+			</if>
+
+			<if test="userId != null">
+				userid = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="userTel != null">
+			    usertel = #{userTel,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+			    userName = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="orderUserId != null">
+			   orderuserid = #{orderUserId,jdbcType=INTEGER},
+			</if>
+			<if test="orderUserTel != null">
+			   orderUsertel =  #{orderUserTel,jdbcType=VARCHAR},
+			</if>
+			<if test="orderUserName != null">
+			   orderusername = #{orderUserName,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+			     address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="longitude != null">
+                longitude =  #{longitude,jdbcType=DOUBLE},
+            </if>
+            <if test="latitude != null">
+                 latitude =  #{latitude,jdbcType=DOUBLE},
+            </if>
+			<if test="orderMoney != null">
+				ordermoney = #{orderMoney,jdbcType=DOUBLE},
+			</if>
+			<if test="orderStatus != null">
+				orderstatus = #{orderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="orderUserOrderStatus != null">
+			    orderuserorderstatus = #{orderUserOrderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="userOrderStatus != null">
+			    userorderstatus = #{userOrderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="orderManner != null">
+				ordermanner = #{orderManner,jdbcType=INTEGER},
+			</if>
+			<if test="imageUrl != null">
+				imageUrl = #{imageUrl,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where orderid = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from orders
+		where orderid = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>
